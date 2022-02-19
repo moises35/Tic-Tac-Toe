@@ -3,6 +3,9 @@ const contenedor = document.getElementById("contenedor");
 const nombreJugadores = ["1: ❌", "2: 🟢"];
 const jugadorTurno = document.getElementById("jugador");
 const botonReiniciar = document.getElementById("game_restart");
+const ganador = document.getElementById("ganador");
+const abrirModal = document.getElementById("openModal");
+const cerrarModal = document.getElementById("closeModal");
 const condicionesGanadoras = [
     [0, 1, 2], 
     [3, 4, 5],
@@ -30,8 +33,11 @@ contenedor.addEventListener("click", (evento)=> {
                 // Verificamos si hay algún ganador
                 juegoTerminado = gameOver(jugadorActual);
                 if(juegoTerminado) {
-
-                    console.log(`El jugador ${jugadorActual} gano el juego`);
+                    ganador.innerHTML = `
+                        El ganador es el jugador ${jugadorActual === "❌"? nombreJugadores[0]: nombreJugadores[1]}<br>🥳🎉🎊
+                    `
+                    abrirModal.classList.add("mostrar");
+                    console.log(`El jugador ${jugadorActual === "❌"? nombreJugadores[0]: nombreJugadores[1]} gano el juego`);
                 } else {
                     // Si es que el juego continua entonces seguimos
                     jugadorTurno.textContent = jugadorActual === "❌"? nombreJugadores[1]: nombreJugadores[0];
@@ -40,12 +46,19 @@ contenedor.addEventListener("click", (evento)=> {
     
             } 
         }
-    } else {
-
-    }
+    } 
 });
 
 
+
+// Funcion para cerrar el modal
+cerrarModal.addEventListener("click", ()=> {
+    abrirModal.classList.remove("mostrar");
+});
+
+
+
+// Verificar si hay algun ganador
 function gameOver(gamer) {
     for(let i = 0; i < condicionesGanadoras.length; i++) {
         for(let k = 0; k < 3; k++) {
@@ -72,5 +85,6 @@ function reiniciarJuego() {
     }
     jugadorTurno.textContent = nombreJugadores[0];
     jugadorActual = "❌"
+    juegoTerminado = false;
     console.log("Juego reiniciado");
 }
